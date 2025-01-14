@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast } from "sonner";
@@ -30,14 +30,14 @@ export const Navbar = () => {
       toast.error("Error signing out");
     } else {
       toast.success("Signed out successfully");
-      navigate("/");
+      navigate("/venue-booking");
     }
   };
 
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold text-primary">
+        <Link to="/venue-booking" className="text-2xl font-bold text-primary">
           VenueBook
         </Link>
         <div className="space-x-4">

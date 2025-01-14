@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
+import { Helmet } from "react-helmet";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>venue-booking</title>
+      </Helmet>
       <Navbar />
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto text-center">

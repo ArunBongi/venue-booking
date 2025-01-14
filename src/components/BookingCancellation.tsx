@@ -24,7 +24,21 @@ const BookingCancellation = ({ bookingId, onSuccess, onClose }: BookingCancellat
 
     setLoading(true);
     try {
-      const { error } = await supabase
+      // Get booking details first
+      const { data: bookingData, error: bookingError } = await supabase
+        .from("bookings")
+        .select(`
+          *,
+          venue:venues(name, owner_id),
+          user:profiles(full_name)
+        `)
+        .eq("id", bookingId)
+        .single();
+
+      if (bookingError) throw bookingError;
+
+      // Update booking status
+      const { error: updateError } = await supabase
         .from("bookings")
         .update({
           status: "cancelled",
@@ -32,7 +46,21 @@ const BookingCancellation = ({ bookingId, onSuccess, onClose }: BookingCancellat
         })
         .eq("id", bookingId);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
+
+      // Send notification to venue owner
+      const { error: ownerMessageError } = await supabase
+        .from("chat_messages")
+        .insert([
+          {
+            sender_id: bookingData.user_id,
+            receiver_id: bookingData.venue.owner_id,
+            venue_id: bookingData.venue_id,
+            content: `Booking cancelled for ${bookingData.venue.name}. Reason: ${reason}`
+          }
+        ]);
+
+      if (ownerMessageError) throw ownerMessageError;
 
       toast.success("Booking cancelled successfully");
       onSuccess();
