@@ -30,14 +30,14 @@ export const Navbar = () => {
       toast.error("Error signing out");
     } else {
       toast.success("Signed out successfully");
-      navigate("/venue-booking");
+      navigate("/");
     }
   };
 
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/venue-booking" className="text-2xl font-bold text-primary">
+        <Link to="/" className="text-2xl font-bold text-primary">
           VenueBook
         </Link>
         <div className="space-x-4">
